@@ -449,6 +449,15 @@ def chance_of_fate_yellow_room(player_info_arg):
 
     # --- Update player state ---
     player_info_arg["location"] = "Yellow Room"
+
+    healing = 10
+    coin = "Golden Coin"
+    player_info_arg["health"] =+ healing
+    
+    if coin not in player_info_arg["inventory"]:
+        player_info_arg["inventory"].append(coin)
+        print(f"The Mysterious coin restores {healing} health and grants you the {coin}")
+
     player_info_arg["choices"].append("Yellow Room")
     show_player_info(player_info_arg)
 
