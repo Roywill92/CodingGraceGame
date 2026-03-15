@@ -440,7 +440,38 @@ def green_magic_room(player_info_arg):
         print("The magician waves his hand and you are whisked away...\n")
         return "flee"
 
+def chance_of_fate_yellow_room(player_info_arg):
+    """The Yellow Room: win the magical coin by guessing three flips in a row."""
 
+    print("\nYou have entered the Yellow Room.")
+    print("A glowing golden coin floats in the air.")
+    print("A voice whispers: 'Call the coin correctly three times in a row to claim it.'")
+
+    # --- Update player state ---
+    player_info_arg["location"] = "Yellow Room"
+    player_info_arg["choices"].append("Yellow Room")
+    show_player_info(player_info_arg)
+
+    wins = 0
+
+    while wins < 3:
+        guess = input("Call the coin [heads | tails] > ").strip().lower()
+
+        if guess not in ["heads", "tails"]:
+            print("Not sure what you meant there... try again.")
+            continue
+
+        coin = random.choice(["heads", "tails"])
+        print(f"The coin spins in the air... it lands on {coin}.")
+
+        if guess == coin:
+            wins += 1
+            print(f"Correct! You have guessed right {wins} time(s) in a row.\n")
+        else:
+            print("Wrong guess. Your streak resets.\n")
+            wins = 0
+
+    you_won("You caught the Golden Coin and mastered the game of chance")
 # ===========================================================================
 # CONTROL FUNCTIONS
 # ===========================================================================
@@ -501,10 +532,10 @@ def start_new_adventure(player_info_arg):
 
     while True:
         print_new_dungeon()
-        print("You enter a room, and you see a red door to your left "
-              "and blue and green doors to your right.")
-        door_picked = input("Do you pick the red door, blue door, "
-                            "or green door? > ")
+        print("You enter a room, and you see a red and a blue door to your left "
+              "and green and yellow doors to your right.")
+        door_picked = input("Do you pick the red door, blue door, green door "
+                            "or yellow door? > ")
 
         # We compare only the first few characters so that inputs like
         # "red door", "blue", or "green one" all work.
@@ -516,8 +547,10 @@ def start_new_adventure(player_info_arg):
             room_result = blissful_ignorance_of_illusion_room(player_info_arg)
         elif door.startswith("green"):
             room_result = green_magic_room(player_info_arg)
+        elif door.startswith("yellow"):
+            room_result = chance_of_fate_yellow_room(player_info_arg)
         else:
-            print("Sorry, it's either 'red', 'blue', or 'green' as the "
+            print("Sorry, it's either 'red', 'blue', 'green' or 'yellow' as the "
                   "answer. You're the weakest link, goodbye!")
             # Continue the loop so the player can try again.
             continue
@@ -689,25 +722,25 @@ def print_magician():
 
 def print_new_dungeon():
     print()
-    print(r"   _____________________________________________________________________________")
-    print(r" /|     -_-                                                           _-      |\ ")
-    print(r"/ |_-_- _                                                     -_- _-   -_-   -| \   ")
-    print(r"  |                                  _-  _--                                     | ")
-    print(r"  |                                  ,                                           |")
-    print(r"  |      .-'  '-.        '(        .-'  '-.       '(        .-'  '-.            |")
-    print(r"  |    . |        .      )'      . |        .    )'      . |        .          |")
-    print(r"  |   /   |   ()    \      U      /   |   ()    \      U      /   |   ()    \   |")
-    print(r"  |  |    |    ;     | o   T   o |    |    ;     | o   T   o |    |    ;     |  |")
-    print(r"  |  |    |     ;    |  .  |  .  |    |     ;    |  .  |  .  |    |     ;    |  |")
-    print(r"  |  |    |     ;    |   . | .   |    |     ;    |   . | .   |    |     ;    |  |")
-    print(r"  |  |    |     ;    |    .|.    |    |     ;    |    .|.    |    |     ;    |  |")
-    print(r"  |  |    |____;_____|     |     |    |____;_____|     |     |    |____;_____|  |  ")
-    print(r"  |  |   /  __ ;  -  |     !     |   /     '() _-|     !     |  /     '() _-  |  |")
-    print(r"  |  |  / __  ()     |  -      - |  /  __--    -|  -      -  | /  __--     -  |  |")
-    print(r"  |  | /        __-- |    _- _   | /        __--|    _- _   | /        __--_  |  |")
-    print(r"  |__|/________________|_________|/________________|_________|/________________|__|")
-    print(r" /                                                        _ -                      \ ")
-    print(r"/   -_- _ -                  _- _---                             -_-  -_-         \ ")
+    print(r"   ____________________________________________________________________________________________________")
+    print(r" /|     -_-                                                           _-                 _-            |\ ")
+    print(r"/ |_-_- _                                                     -_- _-                     -_-   -_-     | \ ")
+    print(r"  |                                  _-  _--                                         _-                | ")
+    print(r"  |                                  ,                                               ,                 |")
+    print(r"  |       .-'  '-.        '(          .-'  '-.       '(           .-'  '-.       '(           .-'  '-. |")
+    print(r"  |    .  |        .      )'        . |        .     )'         . |        .    )'          . |        . |")
+    print(r"  |   /   |   ()    \      U      /   |   ()    \      U      /   |   ()    \      U      /   |   ()    \ |")
+    print(r"  |  |    |    ;     | o   T   o |    |    ;     | o   T   o |    |    ;     | o   T   o |    |    ;     |")
+    print(r"  |  |    |     ;    |  .  |  .  |    |     ;    |  .  |  .  |    |     ;    |  .  |  .  |    |     ;    |")
+    print(r"  |  |    |     ;    |   . | .   |    |     ;    |   . | .   |    |     ;    |   . | .   |    |     ;    |")
+    print(r"  |  |    |     ;    |    .|.    |    |     ;    |    .|.    |    |     ;    |    .|.    |    |     ;    |")
+    print(r"  |  |    |____;_____|     |     |    |____;_____|     |     |    |____;_____|     |     |    |____;_____|")
+    print(r"  |  |   /  __ ;  -  |     !     |   /     '() _-|     !     |   /     '() _-|     !     |   /     '() _-|")
+    print(r"  |  |  / __  ()     |  -      - |  /  __--     -|  -      - |  /  __--     -|  -      - |  /  __--     -|")
+    print(r"  |  | /        __-- |    _- _   | /         __--|    _- _   | /       __--_ |    _- _   | /        __-- |")
+    print(r"  |__|/________________|_________|/________________|_________|/________________|_________|/________________|")
+    print(r" /                                                                              _ -                         \ ")
+    print(r"/   -_- _ -                  _- _---                             -_-  -_-         -_-                        \ ")
     print()
 
 
